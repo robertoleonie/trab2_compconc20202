@@ -1,51 +1,48 @@
-import java.util.Queue;
 import java.util.Random;
 
-public class Sensor {
+public class Sensor extends Thread{
   public static final int MIN_TEMPERATURA = 25; 
   public static final int MAX_TEMPERATURA = 40;
   public static final int NUM_ELEMENTOS = 60;
 
   int id;
-  Queue<Elemento> fila;
+  FilaCircular<Elemento> fila;
   Elemento elemento;
-  Escritor escritor = new Escritor();
+  LE le;
   Random random = new Random();
-  double media = 0;
+  // double media = 0;
   int contMedia = 0;
+  int valorLido;
 
-  public Sensor(int id, Queue<Elemento> fila) {
+  public Sensor(int id, FilaCircular<Elemento> fila, LE le) {
     this.id = id;
     this.fila = fila;
+    this.le = le;
   }
 
-  public void medicao() {
+  @Override
+  public void run() {
+    elemento = new Elemento(this.valorLido, this.id, this.contMedia);
     while(true) {
-      escritor.iniciaEscrita(this.id);
+      le.EntraEscritor(this.id);
       System.out.println("Sensor " + this.id + " esta registrando a temperatura");
-      int valorLido = (random.nextInt() % (MAX_TEMPERATURA - MIN_TEMPERATURA + 1)) + MIN_TEMPERATURA;
-      
-      this.media += valorLido;
-      this.contMedia++;
+      this.valorLido = (random.nextInt() % (MAX_TEMPERATURA - MIN_TEMPERATURA + 1)) + MIN_TEMPERATURA;
 
-      if (fila.size() > 60) {
-        // Fila circular
+      if (this.valorLido > 30) {
+        elemento.valor = this.valorLido;
+        elemento.idLeitura = this.contMedia++;
+
+        fila.enfileira(elemento);
       }
 
-      if (valorLido > 30) {
-        elemento = new Elemento(valorLido, this.id, elemento.idLeitura++);
-        fila.add(elemento);
-      }
-
-      escritor.terminaEscrita(this.id);
+      le.SaiEscritor(this.id);
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {};
+      System.out.println("Sensor " + this.id + "terminou!");
     }
 
-    this.media = this.media / this.contMedia;
-    System.out.println("Temperatura Media do Sensor: "+id+" foi: "+ media);
+    // this.media = this.media / this.contMedia;
+    // System.out.println("Temperatura Media do Sensor: "+ this.id +" foi: " + this.media);
   }
-
-  
 }
