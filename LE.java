@@ -10,7 +10,7 @@ class LE {
   
   public synchronized void EntraLeitor (int id) {
     try { 
-      if (this.escritores > 0) {
+      while (this.escritores > 0) {
          System.out.println ("le.leitorBloqueado("+id+")");
          wait(); 
       }
@@ -29,8 +29,7 @@ class LE {
   // Entrada para escritores
   public synchronized void EntraEscritor (int id) {
     try { 
-      
-      if ((this.leitores > 0) || (this.escritores > 0)) {
+      while ((this.leitores > 0) || (this.escritores > 0)) {
          System.out.println ("le.escritorBloqueado("+id+")");
          wait();  
       }
