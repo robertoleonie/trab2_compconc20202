@@ -1,28 +1,22 @@
 import java.util.Arrays;
 
-public class FilaCircular<T> {
-  int tamanhoAtual; //Current Circular Queue Size
-  T[] elementosDaFila;
-  int tamanhoMaximo; //Circular Queue maximum size
+public class FilaCircular {
+  int tamanhoAtual;
+  Elemento[] elementosDaFila;
+  int tamanhoMaximo;
 
-  int finalDaFila; //finalDaFila position of Circular queue(new element enqueued at finalDaFila).
-  int inicioDaFila; //inicioDaFila position of Circular queue(element will be dequeued from inicioDaFila).      
+  int finalDaFila;
+  int inicioDaFila;      
 
   public FilaCircular(int tamanhoMaximo) {
     this.tamanhoMaximo = tamanhoMaximo;
-    elementosDaFila = (T[]) new Object[this.tamanhoMaximo];
+    elementosDaFila = new Elemento[tamanhoMaximo];
     tamanhoAtual = 0;
     inicioDaFila = -1;
     finalDaFila = -1;
   }
 
-  /**
-   * Enqueue elements to finalDaFila.
-   */
-  public void enfileira(T item) throws FilaCheiaException {
-    // if (estaCheia()) {
-    //   throw new FilaCheiaException("Circular Queue is full. Element cannot be added");
-    // } else {
+  public void enfileira(Elemento item) throws FilaCheiaException {
       finalDaFila = (finalDaFila + 1) % elementosDaFila.length;
       elementosDaFila[finalDaFila] = item;
       tamanhoAtual++;
@@ -30,35 +24,31 @@ public class FilaCircular<T> {
       if (inicioDaFila == -1) {
         inicioDaFila = finalDaFila;
       }
+
+      if (finalDaFila == inicioDaFila && tamanhoAtual > 1) {
+        inicioDaFila = (finalDaFila + 1) % elementosDaFila.length;
+      }
     // }
   }
 
-  /**
-   * Dequeue element from Front.
-   */
-  public T desenfileira() throws FilaVaziaException {
-    T elementoDesenfileirado;
-    if (estaVazia()) {
-      throw new FilaVaziaException("Circular Queue is empty. Element cannot be retrieved");
-    } else {
-      elementoDesenfileirado = elementosDaFila[inicioDaFila];
-      elementosDaFila[inicioDaFila] = null;
-      inicioDaFila = (inicioDaFila + 1) % elementosDaFila.length;
-      tamanhoAtual--;
-    }
-    return elementoDesenfileirado;
-  }
+  
+  // public Elemento desenfileira() throws FilaVaziaException {
+  //   Elemento elementoDesenfileirado;
+  //   if (estaVazia()) {
+  //     throw new FilaVaziaException("Circular Queue is empty. Element cannot be retrieved");
+  //   } else {
+  //     elementoDesenfileirado = elementosDaFila[inicioDaFila];
+  //     elementosDaFila[inicioDaFila] = null;
+  //     inicioDaFila = (inicioDaFila + 1) % elementosDaFila.length;
+  //     tamanhoAtual--;
+  //   }
+  //   return elementoDesenfileirado;
+  // }
 
-  /**
-   * Check if queue is full.
-   */
   public boolean estaCheia() {
     return (tamanhoAtual == elementosDaFila.length);
   }
 
-  /**
-   * Check if Queue is empty.
-   */
   public boolean estaVazia() {
     return (tamanhoAtual == 0);
   }
