@@ -1,4 +1,4 @@
-public class Elemento {
+public class Elemento{
   int valor, idSensor, idLeitura = 0;
 
   public Elemento(int valor, int idSensor, int idLeitura) {
