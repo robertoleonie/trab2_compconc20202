@@ -3,10 +3,10 @@ import java.util.Random;
 public class Sensor extends Thread{
   public static final int MIN_TEMPERATURA = 25; 
   public static final int MAX_TEMPERATURA = 40;
-  public static final int NUM_ELEMENTOS = 60;
+  // public static final int NUM_ELEMENTOS = 60;
 
   int id;
-  FilaCircular<Elemento> fila;
+  FilaCircular fila;
   Elemento elemento;
   LE le;
   Random random = new Random();
@@ -14,35 +14,31 @@ public class Sensor extends Thread{
   int contMedia = 0;
   int valorLido;
 
-  public Sensor(int id, FilaCircular<Elemento> fila, LE le) {
+  public Sensor(int id, FilaCircular fila, LE le) {
     this.id = id;
     this.fila = fila;
     this.le = le;
   }
 
   @Override
-  public void run() {
-    elemento = new Elemento(this.valorLido, this.id, this.contMedia);
+  public void run(){
     while(true) {
       le.EntraEscritor(this.id);
       System.out.println("Sensor " + this.id + " esta registrando a temperatura");
-      this.valorLido = (random.nextInt() % (MAX_TEMPERATURA - MIN_TEMPERATURA + 1)) + MIN_TEMPERATURA;
+      this.valorLido = random.nextInt(MAX_TEMPERATURA - MIN_TEMPERATURA) + MIN_TEMPERATURA;
+      System.out.println("Sensor " + this.id + " registrou a temperatura: "+ this.valorLido);
 
       if (this.valorLido > 30) {
-        elemento.valor = this.valorLido;
-        elemento.idLeitura = this.contMedia++;
-
+        elemento = new Elemento(this.valorLido, this.id, this.contMedia++);
         fila.enfileira(elemento);
       }
 
+      System.out.println("Sensor " + this.id + " terminou!");
       le.SaiEscritor(this.id);
+      
       try {
         Thread.sleep(1000);
       } catch (InterruptedException e) {};
-      System.out.println("Sensor " + this.id + "terminou!");
     }
-
-    // this.media = this.media / this.contMedia;
-    // System.out.println("Temperatura Media do Sensor: "+ this.id +" foi: " + this.media);
   }
 }
