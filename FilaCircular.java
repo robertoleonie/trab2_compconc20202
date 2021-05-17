@@ -1,5 +1,6 @@
 import java.util.Arrays;
 
+// Objeto que representa um array circular FIFO
 public class FilaCircular {
   int tamanhoAtual;
   Elemento[] elementosDaFila;
@@ -16,7 +17,8 @@ public class FilaCircular {
     finalDaFila = -1;
   }
 
-  public void enfileira(Elemento item) throws FilaCheiaException {
+  // Função que enfilera um Elemento na fila
+  public void enfileira(Elemento item) {
       finalDaFila = (finalDaFila + 1) % elementosDaFila.length;
       elementosDaFila[finalDaFila] = item;
       tamanhoAtual++;
@@ -60,29 +62,31 @@ public class FilaCircular {
 
 }
 
-class FilaCheiaException extends RuntimeException {
+// Classe caso seja não se possa inserir algo na fila caso ela esteja cheia
+// class FilaCheiaException extends RuntimeException {
 
-  private static final long serialVersionUID = 1L;
+//   private static final long serialVersionUID = 1L;
 
-  public FilaCheiaException() {
-    super();
-  }
+//   public FilaCheiaException() {
+//     super();
+//   }
 
-  public FilaCheiaException(String message) {
-    super(message);
-  }
-}
+//   public FilaCheiaException(String message) {
+//     super(message);
+//   }
+// }
 
-class FilaVaziaException extends RuntimeException {
+// Classe caso não se pode remover algo da fila caso ela esteja vazia
+// class FilaVaziaException extends RuntimeException {
 
-  private static final long serialVersionUID = 1L;
+//   private static final long serialVersionUID = 1L;
 
-  public FilaVaziaException() {
-    super();
-  }
+//   public FilaVaziaException() {
+//     super();
+//   }
 
-  public FilaVaziaException(String message) {
-    super(message);
-  }
-}
+//   public FilaVaziaException(String message) {
+//     super(message);
+//   }
+// }
 

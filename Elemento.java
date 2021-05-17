@@ -1,3 +1,4 @@
+// Elemento que representa uma leitura de um Sensor
 public class Elemento{
   int valor, idSensor, idLeitura = 0;
 
@@ -7,15 +8,15 @@ public class Elemento{
     this.idLeitura = idLeitura;
   }
 
-  public int getValor() {
-    return this.valor;
-  }
+  // public int getValor() {
+  //   return this.valor;
+  // }
 
-  public int getIdSensor() {
-    return this.idSensor;
-  }
+  // public int getIdSensor() {
+  //   return this.idSensor;
+  // }
 
-  public int getIdLeitura() {
-    return this.idLeitura;
-  }
+  // public int getIdLeitura() {
+  //   return this.idLeitura;
+  // }
 }
